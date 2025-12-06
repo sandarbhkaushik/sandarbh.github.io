@@ -1,0 +1,2899 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Frontend Engineering Guide</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary: #3b82f6;
+        --secondary: #8b5cf6;
+        --accent: #06b6d4;
+        --bg: #0f172a;
+        --bg-secondary: #1e293b;
+        --bg-card: #334155;
+        --text: #f1f5f9;
+        --text-secondary: #cbd5e1;
+        --border: #475569;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+      }
+
+      header {
+        background: var(--bg-secondary);
+        border-bottom: 1px solid var(--border);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      nav {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+        list-style: none;
+      }
+
+      .nav-links a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+
+      .nav-links a:hover {
+        color: var(--primary);
+      }
+
+      .hero {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 6rem 2rem;
+        text-align: center;
+      }
+
+      .hero h1 {
+        font-size: 3.5rem;
+        margin-bottom: 1rem;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--secondary),
+          var(--accent)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .hero p {
+        font-size: 1.3rem;
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+      }
+
+      .btn {
+        padding: 0.875rem 2rem;
+        border-radius: 8px;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: all 0.3s;
+        display: inline-block;
+        margin: 0.5rem;
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+      }
+
+      .features {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 4rem 2rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+      }
+
+      .feature-card {
+        background: var(--bg-secondary);
+        padding: 2rem;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        transition: all 0.3s;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--primary);
+      }
+
+      .feature-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+      }
+      .feature-card h3 {
+        color: var(--primary);
+        margin-bottom: 0.5rem;
+      }
+
+      .content-section {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 4rem 2rem;
+      }
+
+      .section-title {
+        font-size: 2.5rem;
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+
+      .section-subtitle {
+        text-align: center;
+        color: var(--text-secondary);
+        margin-bottom: 3rem;
+      }
+
+      .tabs {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .tab-btn {
+        padding: 0.75rem 1.5rem;
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+        color: var(--text-secondary);
+      }
+
+      .tab-btn.active {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+      }
+
+      .tab-content {
+        display: none;
+      }
+      .tab-content.active {
+        display: block;
+      }
+
+      .problem-card {
+        background: var(--bg-secondary);
+        padding: 1.5rem;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        margin-bottom: 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .problem-card:hover {
+        border-color: var(--primary);
+      }
+      .problem-card.expanded {
+        border-color: var(--accent);
+      }
+
+      .problem-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .problem-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .expand-icon {
+        transition: transform 0.3s;
+        font-size: 1.2rem;
+      }
+
+      .problem-card.expanded .expand-icon {
+        transform: rotate(180deg);
+      }
+
+      .difficulty {
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 600;
+      }
+
+      .difficulty.easy {
+        background: rgba(34, 197, 94, 0.2);
+        color: #4ade80;
+      }
+      .difficulty.medium {
+        background: rgba(251, 146, 60, 0.2);
+        color: #fb923c;
+      }
+      .difficulty.hard {
+        background: rgba(239, 68, 68, 0.2);
+        color: #f87171;
+      }
+
+      .problem-description {
+        color: var(--text-secondary);
+        margin-top: 0.5rem;
+      }
+
+      .topics {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+      }
+
+      .topic-tag {
+        background: var(--bg-card);
+        padding: 0.25rem 0.75rem;
+        border-radius: 15px;
+        font-size: 0.875rem;
+        color: var(--accent);
+      }
+
+      .answer-section {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease;
+      }
+
+      .problem-card.expanded .answer-section {
+        max-height: 3000px;
+      }
+
+      .answer-content {
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border);
+        margin-top: 1rem;
+      }
+
+      .answer-content h4 {
+        color: var(--accent);
+        margin-bottom: 1rem;
+      }
+
+      .answer-content p {
+        margin-bottom: 1rem;
+        line-height: 1.8;
+      }
+
+      .answer-content ul,
+      .answer-content ol {
+        margin-left: 1.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .answer-content li {
+        margin-bottom: 0.5rem;
+        color: var(--text-secondary);
+      }
+
+      .code-block {
+        background: var(--bg);
+        padding: 1rem;
+        border-radius: 8px;
+        margin: 1rem 0;
+        overflow-x: auto;
+        border: 1px solid var(--border);
+      }
+
+      .code-block pre {
+        color: #4ade80;
+        font-family: "Courier New", monospace;
+        font-size: 0.9rem;
+        white-space: pre-wrap;
+      }
+
+      footer {
+        background: var(--bg-secondary);
+        border-top: 1px solid var(--border);
+        padding: 2rem;
+        text-align: center;
+        color: var(--text-secondary);
+        margin-top: 4rem;
+      }
+
+      @media (max-width: 768px) {
+        .hero h1 {
+          font-size: 2rem;
+        }
+        .nav-links {
+          display: none;
+        }
+        .features {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="logo">Frontend Guide</div>
+        <ul class="nav-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#problems">Problems</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="home">
+        <h1>Frontend Engineering Guide</h1>
+        <p>Master JavaScript, React & Angular - Interview Success</p>
+        <button class="btn btn-primary" onclick="location.href='#problems'">
+          Browse Problems
+        </button>
+      </section>
+
+      <section class="features" id="features">
+        <div class="feature-card">
+          <div class="feature-icon">🔧</div>
+          <h3>JavaScript Core</h3>
+          <p>Master closures, promises, async/await, and ES6+ patterns.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚛️</div>
+          <h3>React Patterns</h3>
+          <p>Learn hooks, state management, and optimization.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🅰️</div>
+          <h3>Angular Mastery</h3>
+          <p>Deep dive into Angular, RxJS, and dependency injection.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💻</div>
+          <h3>Complete Solutions</h3>
+          <p>Full implementations with complexity analysis.</p>
+        </div>
+      </section>
+
+      <section class="content-section" id="problems">
+        <h2 class="section-title">Problem Collections</h2>
+        <p class="section-subtitle">Click any question to see the answer</p>
+
+        <div class="tabs">
+          <button class="tab-btn active" onclick="switchTab('javascript')">
+            JavaScript
+          </button>
+          <button class="tab-btn" onclick="switchTab('react')">React</button>
+          <button class="tab-btn" onclick="switchTab('angular')">
+            Angular
+          </button>
+        </div>
+
+        <div id="javascript" class="tab-content active">
+          <div id="js-problems"></div>
+        </div>
+
+        <div id="react" class="tab-content">
+          <div id="react-problems"></div>
+        </div>
+
+        <div id="angular" class="tab-content">
+          <div id="angular-problems"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 Frontend Engineering Guide</p>
+      <p>Happy Learning! 🚀</p>
+    </footer>
+
+    <script>
+      const questionsData = {
+        javascript: [
+          {
+            title: "Custom Promise Implementation",
+            difficulty: "hard",
+            description:
+              "Build your own Promise class with then, catch, finally methods.",
+            tags: ["Async", "Promises", "Event Loop"],
+            answer: `
+                        <h4>Solution:</h4>
+                        <p>A Promise represents an asynchronous operation. Here's the implementation:</p>
+                        <div class="code-block"><pre>class MyPromise {
+  constructor(executor) {
+    this.state = 'pending';
+    this.value = undefined;
+    this.handlers = [];
+    
+    const resolve = (value) => {
+      if (this.state !== 'pending') return;
+      this.state = 'fulfilled';
+      this.value = value;
+      this.handlers.forEach(h => this.handle(h));
+    };
+    
+    const reject = (reason) => {
+      if (this.state !== 'pending') return;
+      this.state = 'rejected';
+      this.value = reason;
+      this.handlers.forEach(h => this.handle(h));
+    };
+    
+    try {
+      executor(resolve, reject);
+    } catch (err) {
+      reject(err);
+    }
+  }
+  
+  then(onFulfilled, onRejected) {
+    return new MyPromise((resolve, reject) => {
+      this.handlers.push({
+        onFulfilled, onRejected, resolve, reject
+      });
+      if (this.state !== 'pending') {
+        this.handle(this.handlers[this.handlers.length-1]);
+      }
+    });
+  }
+}</pre></div>
+                        <p><strong>Key Concepts:</strong></p>
+                        <ul>
+                            <li>Promise has 3 states: pending, fulfilled, rejected</li>
+                            <li>State transitions are one-way and permanent</li>
+                            <li>Handlers execute asynchronously using microtasks</li>
+                            <li>Chaining achieved by returning new promises</li>
+                        </ul>
+                    `,
+          },
+          {
+            title: "Debounce & Throttle",
+            difficulty: "medium",
+            description:
+              "Implement debounce and throttle for performance optimization.",
+            tags: ["Closures", "Timers", "Performance"],
+            answer: `
+                        <h4>Debounce Solution:</h4>
+                        <div class="code-block"><pre>function debounce(func, delay) {
+  let timeoutId;
+  return function(...args) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      func.apply(this, args);
+    }, delay);
+  };
+}
+
+// Usage
+const search = debounce((query) => {
+  console.log('Searching:', query);
+}, 300);</pre></div>
+                        
+                        <h4>Throttle Solution:</h4>
+                        <div class="code-block"><pre>function throttle(func, limit) {
+  let inThrottle;
+  return function(...args) {
+    if (!inThrottle) {
+      func.apply(this, args);
+      inThrottle = true;
+      setTimeout(() => inThrottle = false, limit);
+    }
+  };
+}</pre></div>
+                        
+                        <p><strong>Differences:</strong></p>
+                        <ul>
+                            <li><strong>Debounce:</strong> Delays until quiet period. Good for search.</li>
+                            <li><strong>Throttle:</strong> Executes max once per period. Good for scroll.</li>
+                        </ul>
+                    `,
+          },
+          {
+            title: "Deep Clone Object",
+            difficulty: "medium",
+            description:
+              "Clone nested objects, arrays, dates, and handle circular refs.",
+            tags: ["Recursion", "Objects", "Edge Cases"],
+            answer: `
+                        <h4>Solution:</h4>
+                        <div class="code-block"><pre>function deepClone(obj, hash = new WeakMap()) {
+  if (obj === null || typeof obj !== 'object') {
+    return obj;
+  }
+  
+  if (hash.has(obj)) return hash.get(obj);
+  
+  if (obj instanceof Date) return new Date(obj);
+  
+  if (Array.isArray(obj)) {
+    const arr = [];
+    hash.set(obj, arr);
+    obj.forEach((item, i) => {
+      arr[i] = deepClone(item, hash);
+    });
+    return arr;
+  }
+  
+  const cloned = {};
+  hash.set(obj, cloned);
+  Object.keys(obj).forEach(key => {
+    cloned[key] = deepClone(obj[key], hash);
+  });
+  return cloned;
+}</pre></div>
+                        
+                        <p><strong>Key Points:</strong></p>
+                        <ul>
+                            <li>Use WeakMap for circular references</li>
+                            <li>Handle Dates, Arrays, Objects separately</li>
+                            <li>Recursive for nested structures</li>
+                        </ul>
+                    `,
+          },
+        ],
+        react: [
+          {
+            title: "Custom Hook - useDebounce",
+            difficulty: "medium",
+            description: "Create useDebounce hook for search optimization.",
+            tags: ["Hooks", "useEffect", "Performance"],
+            answer: `
+                        <h4>Solution:</h4>
+                        <div class="code-block"><pre>import { useState, useEffect } from 'react';
+
+function useDebounce(value, delay) {
+  const [debounced, setDebounced] = useState(value);
+  
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebounced(value);
+    }, delay);
+    
+    return () => clearTimeout(handler);
+  }, [value, delay]);
+  
+  return debounced;
+}
+
+// Usage
+function Search() {
+  const [term, setTerm] = useState('');
+  const debouncedTerm = useDebounce(term, 500);
+  
+  useEffect(() => {
+    if (debouncedTerm) {
+      // API call
+      console.log('Search:', debouncedTerm);
+    }
+  }, [debouncedTerm]);
+  
+  return (
+    &lt;input 
+      value={term}
+      onChange={e => setTerm(e.target.value)}
+    /&gt;
+  );
+}</pre></div>
+                        
+                        <p><strong>Benefits:</strong></p>
+                        <ul>
+                            <li>Reduces API calls</li>
+                            <li>Cleanup prevents memory leaks</li>
+                            <li>Reusable across components</li>
+                        </ul>
+                    `,
+          },
+          {
+            title: "usePrevious Hook",
+            difficulty: "easy",
+            description: "Hook that returns previous value of state/prop.",
+            tags: ["Hooks", "useRef", "useEffect"],
+            answer: `
+                        <h4>Solution:</h4>
+                        <div class="code-block"><pre>import { useEffect, useRef } from 'react';
+
+function usePrevious(value) {
+  const ref = useRef();
+  
+  useEffect(() => {
+    ref.current = value;
+  }, [value]);
+  
+  return ref.current;
+}
+
+// Usage
+function Counter() {
+  const [count, setCount] = useState(0);
+  const prevCount = usePrevious(count);
+  
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Current: {count}&lt;/p&gt;
+      &lt;p&gt;Previous: {prevCount}&lt;/p&gt;
+      &lt;button onClick={() => setCount(count + 1)}&gt;
+        +
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</pre></div>
+                        
+                        <p><strong>How it works:</strong></p>
+                        <ul>
+                            <li>useRef persists without re-renders</li>
+                            <li>useEffect updates after render</li>
+                            <li>Returns undefined on first render</li>
+                        </ul>
+                    `,
+          },
+        ],
+        angular: [
+          {
+            title: "What is Angular? Explain Architecture",
+            difficulty: "easy",
+            description:
+              "Explain Angular framework and component architecture.",
+            tags: ["Architecture", "Modules", "Components"],
+            answer: `
+                        <h4>Answer:</h4>
+                        <p>Angular is a TypeScript-based framework by Google for building web applications.</p>
+                        
+                        <p><strong>Core Architecture:</strong></p>
+                        <ol>
+                            <li><strong>Modules:</strong> Containers for code blocks (AppModule)</li>
+                            <li><strong>Components:</strong> UI building blocks with template & logic</li>
+                            <li><strong>Templates:</strong> HTML with Angular directives</li>
+                            <li><strong>Services:</strong> Reusable business logic</li>
+                            <li><strong>Dependency Injection:</strong> Efficient dependency management</li>
+                            <li><strong>Directives:</strong> Add behavior to elements</li>
+                            <li><strong>Pipes:</strong> Transform data in templates</li>
+                        </ol>
+                        
+                        <div class="code-block"><pre>@Component({
+  selector: 'app-example',
+  template: \`&lt;h1&gt;{{ title }}&lt;/h1&gt;\`,
+  styleUrls: ['./example.css']
+})
+export class ExampleComponent {
+  title = 'Hello Angular';
+}</pre></div>
+                    `,
+          },
+          {
+            title: "Component Lifecycle Hooks",
+            difficulty: "medium",
+            description:
+              "Explain ngOnInit, ngOnChanges, ngOnDestroy and use cases.",
+            tags: ["Lifecycle", "Components", "Memory"],
+            answer: `
+                        <h4>Lifecycle Hooks:</h4>
+                        <ol>
+                            <li><strong>ngOnChanges:</strong> Called when input properties change</li>
+                            <li><strong>ngOnInit:</strong> Initialize component (API calls, setup)</li>
+                            <li><strong>ngDoCheck:</strong> Custom change detection</li>
+                            <li><strong>ngAfterContentInit:</strong> After content projection</li>
+                            <li><strong>ngAfterViewInit:</strong> After view initialization</li>
+                            <li><strong>ngOnDestroy:</strong> Cleanup (unsubscribe, clear timers)</li>
+                        </ol>
+                        
+                        <div class="code-block"><pre>export class MyComponent implements OnInit, OnDestroy {
+  subscription: Subscription;
+  
+  ngOnInit() {
+    this.subscription = this.service.getData()
+      .subscribe(data => this.data = data);
+  }
+  
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+}</pre></div>
+                        
+                        <p><strong>Best Practices:</strong></p>
+                        <ul>
+                            <li>Use ngOnInit for initialization, not constructor</li>
+                            <li>Always unsubscribe in ngOnDestroy</li>
+                            <li>Avoid heavy logic in ngDoCheck</li>
+                        </ul>
+                    `,
+          },
+          {
+            title: "Dependency Injection in Angular",
+            difficulty: "medium",
+            description:
+              "Explain DI system, hierarchical injectors, providedIn.",
+            tags: ["DI", "Services", "Providers"],
+            answer: `
+                        <h4>Dependency Injection:</h4>
+                        <p>DI is a design pattern where dependencies are provided to a class rather than created by it.</p>
+                        
+                        <p><strong>How it works:</strong></p>
+                        <div class="code-block"><pre>@Injectable({
+  providedIn: 'root'  // App-wide singleton
+})
+export class DataService {
+  getData() {
+    return this.http.get('/api/data');
+  }
+}
+
+// Component injection
+export class MyComponent {
+  constructor(private dataService: DataService) {}
+}</pre></div>
+                        
+                        <p><strong>Provider Scopes:</strong></p>
+                        <ul>
+                            <li><strong>providedIn: 'root':</strong> Single instance app-wide</li>
+                            <li><strong>Module providers:</strong> Instance per module</li>
+                            <li><strong>Component providers:</strong> New instance per component</li>
+                        </ul>
+                        
+                        <p><strong>Benefits:</strong></p>
+                        <ul>
+                            <li>Loose coupling</li>
+                            <li>Easy testing (mock dependencies)</li>
+                            <li>Code reusability</li>
+                        </ul>
+                    `,
+          },
+          {
+            title: "RxJS Operators - Deep Dive",
+            difficulty: "hard",
+            description:
+              "switchMap, mergeMap, concatMap, exhaustMap differences.",
+            tags: ["RxJS", "Observables", "Async"],
+            answer: `
+                        <h4>Flattening Operators:</h4>
+                        
+                        <p><strong>1. switchMap:</strong> Cancels previous, switches to new</p>
+                        <div class="code-block"><pre>// Search: cancel previous requests
+searchTerm$.pipe(
+  switchMap(term => this.api.search(term))
+).subscribe();</pre></div>
+                        
+                        <p><strong>2. mergeMap:</strong> Runs all concurrently</p>
+                        <div class="code-block"><pre>// Multiple parallel requests
+ids$.pipe(
+  mergeMap(id => this.api.getUser(id))
+).subscribe();</pre></div>
+                        
+                        <p><strong>3. concatMap:</strong> Waits for each to complete</p>
+                        <div class="code-block"><pre>// Sequential operations
+actions$.pipe(
+  concatMap(action => this.api.process(action))
+).subscribe();</pre></div>
+                        
+                        <p><strong>4. exhaustMap:</strong> Ignores new until current completes</p>
+                        <div class="code-block"><pre>// Prevent double-click
+button$.pipe(
+  exhaustMap(() => this.api.save())
+).subscribe();</pre></div>
+                        
+                        <p><strong>When to use:</strong></p>
+                        <ul>
+                            <li><strong>switchMap:</strong> Search, autocomplete (latest only)</li>
+                            <li><strong>mergeMap:</strong> Independent requests</li>
+                            <li><strong>concatMap:</strong> Order matters</li>
+                            <li><strong>exhaustMap:</strong> Prevent spam clicks</li>
+                        </ul>
+                    `,
+          },
+          {
+            title: "Change Detection Strategies",
+            difficulty: "hard",
+            description:
+              "Default vs OnPush, Zone.js, performance optimization.",
+            tags: ["Change Detection", "Performance", "Zone.js"],
+            answer: `
+                        <h4>Change Detection:</h4>
+                        
+                        <p><strong>1. Default Strategy:</strong></p>
+                        <ul>
+                            <li>Checks every component on every event</li>
+                            <li>Simple but can be slow for large apps</li>
+                        </ul>
+                        
+                        <p><strong>2. OnPush Strategy:</strong></p>
+                        <div class="code-block"><pre>@Component({
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class OptimizedComponent {
+  @Input() data: Data;
+}</pre></div>
+                        
+                        <p>Only checks when:</p>
+                        <ul>
+                            <li>Input reference changes</li>
+                            <li>Event fires from component</li>
+                            <li>Observable emits (async pipe)</li>
+                            <li>Manual trigger: ChangeDetectorRef.markForCheck()</li>
+                        </ul>
+                        
+                        <p><strong>Zone.js:</strong></p>
+                        <ul>
+                            <li>Monkey-patches async operations</li>
+                            <li>Triggers change detection automatically</li>
+                            <li>Can run outside zone for performance</li>
+                        </ul>
+                        
+                        <div class="code-block"><pre>// Run outside Angular zone
+this.ngZone.runOutsideAngular(() => {
+  setInterval(() => {
+    // Won't trigger change detection
+  }, 1000);
+});</pre></div>
+                        
+                        <p><strong>Performance Tips:</strong></p>
+                        <ul>
+                            <li>Use OnPush with immutable data</li>
+                            <li>Use trackBy in *ngFor</li>
+                            <li>Detach change detector when needed</li>
+                            <li>Use pure pipes</li>
+                        </ul>
+                    `,
+          },
+          {
+            title: "Workflow of Angular",
+            difficulty: "medium",
+            description:
+              "Explain the complete Angular application workflow from bootstrap to rendering.",
+            tags: ["Architecture", "Core Concepts", "Lifecycle"],
+            answer: `
+            <h4>Angular Application Workflow:</h4>
+            
+            <p><strong>1. Application Bootstrap:</strong></p>
+            <ol>
+                <li>main.ts loads and bootstraps the root module (AppModule)</li>
+                <li>platformBrowserDynamic() creates platform for browser</li>
+                <li>bootstrapModule(AppModule) initializes the application</li>
+            </ol>
+            
+            <div class="code-block"><pre>// main.ts
+platformBrowserDynamic()
+  .bootstrapModule(AppModule)
+  .catch(err => console.error(err));</pre></div>
+            
+            <p><strong>2. Module Loading:</strong></p>
+            <ul>
+                <li>Angular loads AppModule and all imported modules</li>
+                <li>Registers all providers and services</li>
+                <li>Creates dependency injection hierarchy</li>
+            </ul>
+            
+            <p><strong>3. Component Initialization:</strong></p>
+            <ol>
+                <li>Root component (AppComponent) is created</li>
+                <li>Constructor is called</li>
+                <li>Lifecycle hooks execute: ngOnChanges → ngOnInit → ngDoCheck → ngAfterContentInit → ngAfterContentChecked → ngAfterViewInit → ngAfterViewChecked</li>
+            </ol>
+            
+            <p><strong>4. Change Detection:</strong></p>
+            <ul>
+                <li>Zone.js intercepts async operations</li>
+                <li>Triggers change detection on events, timers, XHR</li>
+                <li>Updates DOM based on component state changes</li>
+            </ul>
+            
+            <p><strong>5. Rendering Process:</strong></p>
+            <ol>
+                <li>Template compilation (JIT or AOT)</li>
+                <li>Component tree traversal</li>
+                <li>DOM manipulation and updates</li>
+                <li>ViewEncapsulation applies styles</li>
+            </ol>
+            
+            <div class="code-block"><pre>// Complete Flow
+Bootstrap → Load Modules → DI Setup → 
+Create Components → Run Lifecycle Hooks → 
+Change Detection → Render → User Interaction → 
+Change Detection Loop</pre></div>
+        `,
+          },
+          {
+            title: "What is a Decorator? Class-based Decorators",
+            difficulty: "medium",
+            description:
+              "Explain decorators in Angular and their implementation.",
+            tags: ["Decorators", "TypeScript", "Metadata"],
+            answer: `
+            <h4>Decorators in Angular:</h4>
+            <p>Decorators are TypeScript features that add metadata to classes, methods, properties, or parameters. They're functions prefixed with @.</p>
+            
+            <p><strong>Types of Decorators:</strong></p>
+            
+            <p><strong>1. Class Decorators:</strong></p>
+            <div class="code-block"><pre>@Component({
+  selector: 'app-example',
+  template: '&lt;h1&gt;Hello&lt;/h1&gt;'
+})
+export class ExampleComponent {}
+
+@Injectable({ providedIn: 'root' })
+export class DataService {}
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [BrowserModule],
+  bootstrap: [AppComponent]
+})
+export class AppModule {}</pre></div>
+            
+            <p><strong>2. Property Decorators:</strong></p>
+            <div class="code-block"><pre>export class ChildComponent {
+  @Input() data: string;
+  @Output() notify = new EventEmitter();
+  @ViewChild('template') template: TemplateRef;
+  @ContentChild(CardComponent) card: CardComponent;
+}</pre></div>
+            
+            <p><strong>3. Method Decorators:</strong></p>
+            <div class="code-block"><pre>export class MyComponent {
+  @HostListener('click', ['$event'])
+  onClick(event: Event) {
+    console.log('Clicked!');
+  }
+}</pre></div>
+            
+            <p><strong>4. Parameter Decorators:</strong></p>
+            <div class="code-block"><pre>constructor(
+  @Inject(API_URL) private apiUrl: string,
+  @Optional() private logger: LoggerService,
+  @Self() private service: MyService
+) {}</pre></div>
+            
+            <p><strong>Custom Class Decorator Example:</strong></p>
+            <div class="code-block"><pre>function AutoLog(target: any) {
+  const original = target.prototype.ngOnInit;
+  
+  target.prototype.ngOnInit = function(...args: any[]) {
+    console.log('Component initialized:', target.name);
+    if (original) {
+      original.apply(this, args);
+    }
+  };
+}
+
+@Component({ ... })
+@AutoLog
+export class MyComponent implements OnInit {
+  ngOnInit() {
+    console.log('Init logic');
+  }
+}</pre></div>
+            
+            <p><strong>How Decorators Work:</strong></p>
+            <ul>
+                <li>Execute at class definition time (not instantiation)</li>
+                <li>Add metadata using Reflect.metadata</li>
+                <li>Angular's compiler reads this metadata</li>
+                <li>Used for DI, component configuration, lifecycle</li>
+            </ul>
+        `,
+          },
+          {
+            title: "ViewEncapsulation",
+            difficulty: "medium",
+            description:
+              "Explain ViewEncapsulation strategies and their use cases.",
+            tags: ["Styling", "Shadow DOM", "Components"],
+            answer: `
+            <h4>ViewEncapsulation Strategies:</h4>
+            
+            <p><strong>1. Emulated (Default):</strong></p>
+            <div class="code-block"><pre>@Component({
+  selector: 'app-example',
+  encapsulation: ViewEncapsulation.Emulated,
+  styles: ['h1 { color: red; }']
+})
+export class ExampleComponent {}</pre></div>
+            
+            <ul>
+                <li>Angular adds unique attributes to elements (_ngcontent-xxx)</li>
+                <li>Styles scoped to component only</li>
+                <li>No shadow DOM used</li>
+                <li>Best for most use cases</li>
+            </ul>
+            
+            <p><strong>Generated CSS:</strong></p>
+            <div class="code-block"><pre>/* Before */
+h1 { color: red; }
+
+/* After (Emulated) */
+h1[_ngcontent-c0] { color: red; }</pre></div>
+            
+            <p><strong>2. None:</strong></p>
+            <div class="code-block"><pre>@Component({
+  encapsulation: ViewEncapsulation.None,
+  styles: ['h1 { color: blue; }']
+})</pre></div>
+            
+            <ul>
+                <li>No encapsulation - styles are global</li>
+                <li>Can affect other components</li>
+                <li>Use for global styles or third-party integration</li>
+                <li>Styles added to document head</li>
+            </ul>
+            
+            <p><strong>3. ShadowDom:</strong></p>
+            <div class="code-block"><pre>@Component({
+  encapsulation: ViewEncapsulation.ShadowDom,
+  styles: ['h1 { color: green; }']
+})</pre></div>
+            
+            <ul>
+                <li>Uses native Shadow DOM API</li>
+                <li>True style isolation</li>
+                <li>Better performance</li>
+                <li>Limited browser support (IE not supported)</li>
+                <li>Content projection requires ::ng-deep</li>
+            </ul>
+            
+            <p><strong>Comparison & Use Cases:</strong></p>
+            <table style="width:100%; border-collapse: collapse; margin: 1rem 0;">
+                <tr style="background: var(--bg-card);">
+                    <th style="padding: 0.5rem; border: 1px solid var(--border);">Strategy</th>
+                    <th style="padding: 0.5rem; border: 1px solid var(--border);">Isolation</th>
+                    <th style="padding: 0.5rem; border: 1px solid var(--border);">Use Case</th>
+                </tr>
+                <tr>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">Emulated</td>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">Good</td>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">Default choice</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">None</td>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">No isolation</td>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">Global styles, modals</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">ShadowDom</td>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">Perfect</td>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">Web components</td>
+                </tr>
+            </table>
+            
+            <p><strong>Piercing Shadow DOM:</strong></p>
+            <div class="code-block"><pre>/* Deprecated but still works */
+::ng-deep .my-class { color: red; }
+
+/* Better approach - use :host-context */
+:host-context(.theme-dark) .content {
+  background: black;
+}</pre></div>
+        `,
+          },
+          {
+            title: "Dependency Injection Deep Dive",
+            difficulty: "hard",
+            description:
+              "Advanced DI concepts: hierarchical injectors, resolution modifiers, injection tokens.",
+            tags: ["DI", "Services", "Architecture"],
+            answer: `
+            <h4>Advanced Dependency Injection:</h4>
+            
+            <p><strong>1. Hierarchical Injector System:</strong></p>
+            <div class="code-block"><pre>// Root Level (Application-wide singleton)
+@Injectable({ providedIn: 'root' })
+export class GlobalService {}
+
+// Module Level
+@NgModule({
+  providers: [ModuleLevelService]
+})
+export class FeatureModule {}
+
+// Component Level (New instance per component)
+@Component({
+  providers: [ComponentService]
+})
+export class MyComponent {}</pre></div>
+            
+            <p><strong>Injector Hierarchy:</strong></p>
+            <div class="code-block"><pre>NullInjector (top)
+    ↓
+PlatformInjector
+    ↓
+RootInjector (providedIn: 'root')
+    ↓
+ModuleInjector
+    ↓
+ElementInjector (Component/Directive)</pre></div>
+            
+            <p><strong>2. Resolution Modifiers:</strong></p>
+            <div class="code-block"><pre>export class MyComponent {
+  constructor(
+    // Optional - won't throw if not found
+    @Optional() private logger: Logger,
+    
+    // Self - only look in current injector
+    @Self() private localService: LocalService,
+    
+    // SkipSelf - skip current, look in parent
+    @SkipSelf() private parentService: ParentService,
+    
+    // Host - stop at host component
+    @Host() private hostService: HostService
+  ) {}
+}</pre></div>
+            
+            <p><strong>3. InjectionToken for Non-Class Dependencies:</strong></p>
+            <div class="code-block"><pre>// Define token
+export const API_URL = new InjectionToken&lt;string&gt;('api.url', {
+  providedIn: 'root',
+  factory: () => 'https://api.example.com'
+});
+
+export const APP_CONFIG = new InjectionToken&lt;Config&gt;('app.config');
+
+// Provide value
+@NgModule({
+  providers: [
+    { provide: API_URL, useValue: 'https://prod.api.com' },
+    { provide: APP_CONFIG, useFactory: configFactory }
+  ]
+})
+
+// Inject
+constructor(@Inject(API_URL) private apiUrl: string) {}</pre></div>
+            
+            <p><strong>4. Provider Types:</strong></p>
+            <div class="code-block"><pre>// Class Provider
+{ provide: Logger, useClass: ConsoleLogger }
+
+// Value Provider
+{ provide: 'API_KEY', useValue: '12345' }
+
+// Factory Provider
+{
+  provide: Logger,
+  useFactory: (config: Config) => {
+    return config.debug ? new DebugLogger() : new Logger();
+  },
+  deps: [Config]
+}
+
+// Existing Provider (Alias)
+{ provide: NewLogger, useExisting: Logger }</pre></div>
+            
+            <p><strong>5. Multi Providers:</strong></p>
+            <div class="code-block"><pre>export const VALIDATORS = new InjectionToken&lt;Validator[]&gt;('validators');
+
+@NgModule({
+  providers: [
+    { provide: VALIDATORS, useClass: EmailValidator, multi: true },
+    { provide: VALIDATORS, useClass: PhoneValidator, multi: true }
+  ]
+})
+
+// Injects array of all validators
+constructor(@Inject(VALIDATORS) private validators: Validator[]) {}</pre></div>
+            
+            <p><strong>6. Tree-shakable Providers:</strong></p>
+            <div class="code-block"><pre>@Injectable({
+  providedIn: 'root'  // or 'platform' or 'any'
+})
+export class TreeShakableService {}
+
+// Module-specific
+@Injectable({
+  providedIn: FeatureModule
+})
+export class FeatureService {}</pre></div>
+            
+            <p><strong>Best Practices:</strong></p>
+            <ul>
+                <li>Use providedIn: 'root' for singleton services</li>
+                <li>Component-level providers for component-specific state</li>
+                <li>Use InjectionToken for non-class dependencies</li>
+                <li>Avoid circular dependencies</li>
+                <li>Use @Optional() for optional dependencies</li>
+            </ul>
+        `,
+          },
+          {
+            title: "ChangeDetectionStrategy - API Calls Without @Input",
+            difficulty: "hard",
+            description:
+              "How change detection triggers when API call happens in service without @Input decorator.",
+            tags: ["Change Detection", "Performance", "Zone.js"],
+            answer: `
+            <h4>Change Detection with API Calls:</h4>
+            
+            <p><strong>Scenario: Service API Call without @Input</strong></p>
+            
+            <div class="code-block"><pre>@Component({
+  selector: 'app-user-list',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: \`
+    &lt;div *ngFor="let user of users"&gt;{{ user.name }}&lt;/div&gt;
+  \`
+})
+export class UserListComponent implements OnInit {
+  users: User[] = [];
+  
+  constructor(
+    private userService: UserService,
+    private cdr: ChangeDetectorRef
+  ) {}
+  
+  ngOnInit() {
+    // Problem: With OnPush, this won't update view automatically
+    this.userService.getUsers().subscribe(users => {
+      this.users = users;
+      // View won't update! Need manual trigger
+    });
+  }
+}</pre></div>
+            
+            <p><strong>Why It Doesn't Update:</strong></p>
+            <ul>
+                <li>OnPush only checks when @Input reference changes</li>
+                <li>Service call doesn't change component inputs</li>
+                <li>Zone.js triggers change detection but OnPush skips it</li>
+            </ul>
+            
+            <p><strong>Solution 1: Manual Change Detection</strong></p>
+            <div class="code-block"><pre>this.userService.getUsers().subscribe(users => {
+  this.users = users;
+  this.cdr.markForCheck(); // Mark for checking
+  // or
+  this.cdr.detectChanges(); // Immediate check
+});</pre></div>
+            
+            <p><strong>Solution 2: Async Pipe (Recommended)</strong></p>
+            <div class="code-block"><pre>@Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: \`
+    &lt;div *ngFor="let user of users$ | async"&gt;
+      {{ user.name }}
+    &lt;/div&gt;
+  \`
+})
+export class UserListComponent {
+  users$ = this.userService.getUsers();
+  
+  constructor(private userService: UserService) {}
+}</pre></div>
+            
+            <p><strong>Why Async Pipe Works:</strong></p>
+            <ul>
+                <li>Async pipe calls markForCheck() internally</li>
+                <li>Automatically unsubscribes</li>
+                <li>Handles OnPush strategy correctly</li>
+            </ul>
+            
+            <p><strong>Solution 3: BehaviorSubject + Async Pipe</strong></p>
+            <div class="code-block"><pre>export class UserListComponent {
+  private usersSubject = new BehaviorSubject&lt;User[]&gt;([]);
+  users$ = this.usersSubject.asObservable();
+  
+  loadUsers() {
+    this.userService.getUsers().subscribe(users => {
+      this.usersSubject.next(users);
+    });
+  }
+}
+
+// Template
+&lt;div *ngFor="let user of users$ | async"&gt;{{ user.name }}&lt;/div&gt;</pre></div>
+            
+            <p><strong>Solution 4: NgZone.run</strong></p>
+            <div class="code-block"><pre>constructor(
+  private userService: UserService,
+  private ngZone: NgZone
+) {}
+
+loadUsers() {
+  this.userService.getUsers().subscribe(users => {
+    this.ngZone.run(() => {
+      this.users = users;
+    });
+  });
+}</pre></div>
+            
+            <p><strong>When Each Solution:</strong></p>
+            <table style="width:100%; border-collapse: collapse; margin: 1rem 0;">
+                <tr style="background: var(--bg-card);">
+                    <th style="padding: 0.5rem; border: 1px solid var(--border);">Method</th>
+                    <th style="padding: 0.5rem; border: 1px solid var(--border);">Use Case</th>
+                </tr>
+                <tr>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">Async Pipe</td>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">Best practice - automatic</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">markForCheck()</td>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">Complex logic</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">detectChanges()</td>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">Immediate update needed</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">NgZone.run()</td>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">Third-party callbacks</td>
+                </tr>
+            </table>
+        `,
+          },
+          {
+            title: "ChangeDetectionStrategy.OnPush - Drawbacks and Issues",
+            difficulty: "hard",
+            description:
+              "Common problems and pitfalls when using OnPush change detection strategy.",
+            tags: ["Change Detection", "Performance", "Best Practices"],
+            answer: `
+            <h4>OnPush Strategy: Drawbacks & Issues:</h4>
+            
+            <p><strong>1. Mutable Object Updates Not Detected:</strong></p>
+            <div class="code-block"><pre>// ❌ This won't trigger change detection
+@Input() user: User;
+
+updateUser() {
+  this.user.name = 'New Name';  // Mutation!
+  // View won't update because reference didn't change
+}
+
+// ✅ Correct approach - new reference
+updateUser() {
+  this.user = { ...this.user, name: 'New Name' };
+}</pre></div>
+            
+            <p><strong>2. Array Mutations:</strong></p>
+            <div class="code-block"><pre>// ❌ Won't trigger update
+@Input() items: Item[];
+
+addItem(item: Item) {
+  this.items.push(item);  // Same array reference
+}
+
+// ✅ Create new array
+addItem(item: Item) {
+  this.items = [...this.items, item];
+  // or
+  this.items = this.items.concat(item);
+}</pre></div>
+            
+            <p><strong>3. setTimeout/setInterval Issues:</strong></p>
+            <div class="code-block"><pre>// ❌ May not update view
+ngOnInit() {
+  setTimeout(() => {
+    this.data = 'updated';
+  }, 1000);
+}
+
+// ✅ Manual trigger needed
+setTimeout(() => {
+  this.data = 'updated';
+  this.cdr.markForCheck();
+}, 1000);</pre></div>
+            
+            <p><strong>4. Third-Party Library Callbacks:</strong></p>
+            <div class="code-block"><pre>// ❌ External callbacks don't trigger CD
+ngAfterViewInit() {
+  externalLibrary.on('event', (data) => {
+    this.value = data;  // Won't update
+  });
+}
+
+// ✅ Use NgZone or markForCheck
+ngAfterViewInit() {
+  externalLibrary.on('event', (data) => {
+    this.ngZone.run(() => {
+      this.value = data;
+    });
+  });
+}</pre></div>
+            
+            <p><strong>5. EventEmitter Without @Output:</strong></p>
+            <div class="code-block"><pre>// ❌ Service events won't trigger CD
+export class DataService {
+  dataUpdated = new EventEmitter();
+}
+
+// Component
+constructor(private service: DataService) {
+  this.service.dataUpdated.subscribe(data => {
+    this.data = data;  // Won't update with OnPush
+  });
+}
+
+// ✅ Use Subject/BehaviorSubject with async pipe
+export class DataService {
+  private dataSubject = new BehaviorSubject(null);
+  data$ = this.dataSubject.asObservable();
+}</pre></div>
+            
+            <p><strong>6. Form Controls Not Updating:</strong></p>
+            <div class="code-block"><pre>// ❌ FormControl updates may not reflect
+ngOnInit() {
+  this.form.get('name').valueChanges.subscribe(value => {
+    this.displayName = value;  // May not update
+  });
+}
+
+// ✅ Use async pipe or markForCheck
+displayName$ = this.form.get('name').valueChanges;</pre></div>
+            
+            <p><strong>7. Child Component Not Updating Parent:</strong></p>
+            <div class="code-block"><pre>// Parent with OnPush
+@Component({ changeDetection: ChangeDetectionStrategy.OnPush })
+export class ParentComponent {
+  data = { value: 0 };
+  
+  updateData() {
+    this.data.value++;  // ❌ Won't update child
+  }
+}
+
+// ✅ Pass new reference or use markForCheck
+updateData() {
+  this.data = { value: this.data.value + 1 };
+}</pre></div>
+            
+            <p><strong>Common Issues Summary:</strong></p>
+            <ul>
+                <li><strong>Increased Complexity:</strong> Need immutable patterns</li>
+                <li><strong>Memory Overhead:</strong> Creating new objects constantly</li>
+                <li><strong>Debugging Difficulty:</strong> "Why isn't my view updating?"</li>
+                <li><strong>Team Training:</strong> All developers must understand OnPush</li>
+                <li><strong>Library Compatibility:</strong> Some libraries don't work well</li>
+            </ul>
+            
+            <p><strong>When to Avoid OnPush:</strong></p>
+            <ul>
+                <li>Heavy use of mutable state</li>
+                <li>Team unfamiliar with immutability</li>
+                <li>Complex forms with dynamic updates</li>
+                <li>Integration with imperative libraries</li>
+                <li>Rapid prototyping phase</li>
+            </ul>
+            
+            <p><strong>Best Practices:</strong></p>
+            <div class="code-block"><pre>// 1. Use immutable patterns
+updateState() {
+  this.state = { ...this.state, updated: true };
+}
+
+// 2. Prefer async pipe
+data$ = this.service.getData();
+
+// 3. Use markForCheck when needed
+this.cdr.markForCheck();
+
+// 4. Consider signals (Angular 16+)
+count = signal(0);
+updateCount() {
+  this.count.set(this.count() + 1);  // Automatic CD
+}</pre></div>
+        `,
+          },
+          {
+            title: "What is Router? Deep Dive",
+            difficulty: "medium",
+            description:
+              "Angular Router architecture, navigation, lazy loading, and route configuration.",
+            tags: ["Router", "Navigation", "Lazy Loading"],
+            answer: `
+            <h4>Angular Router Deep Dive:</h4>
+            
+            <p><strong>1. Router Configuration:</strong></p>
+            <div class="code-block"><pre>const routes: Routes = [
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent },
+  { 
+    path: 'users/:id', 
+    component: UserComponent,
+    data: { title: 'User Details' },
+    resolve: { user: UserResolver }
+  },
+  {
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.module')
+      .then(m => m.AdminModule),
+    canActivate: [AuthGuard],
+    canLoad: [AdminGuard]
+  },
+  { path: '**', component: NotFoundComponent }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes, {
+    enableTracing: false,  // Debug mode
+    preloadingStrategy: PreloadAllModules,
+    useHash: false,  // HTML5 mode
+    scrollPositionRestoration: 'enabled',
+    anchorScrolling: 'enabled'
+  })],
+  exports: [RouterModule]
+})
+export class AppRoutingModule {}</pre></div>
+            
+            <p><strong>2. Navigation Methods:</strong></p>
+            <div class="code-block"><pre>export class MyComponent {
+  constructor(private router: Router) {}
+  
+  // Programmatic navigation
+  goToUser(id: number) {
+    // Absolute path
+    this.router.navigate(['/users', id]);
+    
+    // Relative path
+    this.router.navigate(['../sibling'], { 
+      relativeTo: this.route 
+    });
+    
+    // With query params
+    this.router.navigate(['/search'], {
+      queryParams: { q: 'angular', page: 1 },
+      queryParamsHandling: 'merge'  // or 'preserve'
+    });
+    
+    // With fragment
+    this.router.navigate(['/page'], { 
+      fragment: 'section1' 
+    });
+    
+    // Navigate by URL
+    this.router.navigateByUrl('/users/123');
+  }
+}</pre></div>
+            
+            <p><strong>3. Route Parameters:</strong></p>
+            <div class="code-block"><pre>export class UserComponent implements OnInit {
+  userId: string;
+  
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
+  
+  ngOnInit() {
+    // Snapshot (one-time read)
+    this.userId = this.route.snapshot.paramMap.get('id');
+    
+    // Observable (updates on route change)
+    this.route.paramMap.subscribe(params => {
+      this.userId = params.get('id');
+      this.loadUser(this.userId);
+    });
+    
+    // Query params
+    this.route.queryParamMap.subscribe(queryParams => {
+      const page = queryParams.get('page');
+      const filter = queryParams.get('filter');
+    });
+    
+    // Data from route config
+    this.route.data.subscribe(data => {
+      console.log(data.title);  // 'User Details'
+    });
+  }
+}</pre></div>
+            
+            <p><strong>4. Child Routes:</strong></p>
+            <div class="code-block"><pre>const routes: Routes = [
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    children: [
+      { path: '', component: DashboardHomeComponent },
+      { path: 'stats', component: StatsComponent },
+      { path: 'reports', component: ReportsComponent }
+    ]
+  }
+];
+
+// DashboardComponent template
+&lt;div class="dashboard"&gt;
+  &lt;nav&gt;
+    &lt;a routerLink="stats"&gt;Stats&lt;/a&gt;
+    &lt;a routerLink="reports"&gt;Reports&lt;/a&gt;
+  &lt;/nav&gt;
+  &lt;router-outlet&gt;&lt;/router-outlet&gt;
+&lt;/div&gt;</pre></div>
+            
+            <p><strong>5. Lazy Loading:</strong></p>
+            <div class="code-block"><pre>// Old syntax (Angular < 8)
+loadChildren: './admin/admin.module#AdminModule'
+
+// New syntax (Angular 8+)
+loadChildren: () => import('./admin/admin.module')
+  .then(m => m.AdminModule)
+
+// Preloading Strategy
+export class SelectivePreloadStrategy implements PreloadingStrategy {
+  preload(route: Route, load: () => Observable&lt;any&gt;): Observable&lt;any&gt; {
+    return route.data?.preload ? load() : of(null);
+  }
+}
+
+// Usage
+{ 
+  path: 'admin', 
+  loadChildren: () => import('./admin/admin.module'),
+  data: { preload: true }
+}</pre></div>
+            
+            <p><strong>6. Router Events:</strong></p>
+            <div class="code-block"><pre>constructor(private router: Router) {
+  this.router.events.pipe(
+    filter(event => event instanceof NavigationEnd)
+  ).subscribe((event: NavigationEnd) => {
+    console.log('Navigated to:', event.url);
+    // Analytics tracking
+    gtag('config', 'GA_ID', { page_path: event.urlAfterRedirects });
+  });
+  
+  // Loading indicator
+  this.router.events.subscribe(event => {
+    if (event instanceof NavigationStart) {
+      this.loading = true;
+    }
+    if (event instanceof NavigationEnd || 
+        event instanceof NavigationCancel ||
+        event instanceof NavigationError) {
+      this.loading = false;
+    }
+  });
+}</pre></div>
+            
+            <p><strong>7. Route Reuse Strategy:</strong></p>
+            <div class="code-block"><pre>export class CustomReuseStrategy implements RouteReuseStrategy {
+  shouldDetach(route: ActivatedRouteSnapshot): boolean {
+    return route.data.reuse;
+  }
+  
+  store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle): void {
+    // Store component
+  }
+  
+  shouldAttach(route: ActivatedRouteSnapshot): boolean {
+    return !!route.data.reuse;
+  }
+  
+  retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle {
+    // Retrieve stored component
+    return null;
+  }
+  
+  shouldReuseRoute(future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean {
+    return future.routeConfig === curr.routeConfig;
+  }
+}
+
+// Register
+{ provide: RouteReuseStrategy, useClass: CustomReuseStrategy }</pre></div>
+        `,
+          },
+          {
+            title: "Router Guards - Complete Guide",
+            difficulty: "hard",
+            description:
+              "All types of route guards with real-world examples and best practices.",
+            tags: ["Router", "Guards", "Security"],
+            answer: `
+            <h4>Route Guards Deep Dive:</h4>
+            
+            <p><strong>1. CanActivate - Protect Route Access:</strong></p>
+            <div class="code-block"><pre>@Injectable({ providedIn: 'root' })
+export class AuthGuard implements CanActivate {
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
+  
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable&lt;boolean | UrlTree&gt; | boolean {
+    
+    return this.authService.isAuthenticated$.pipe(
+      map(isAuth => {
+        if (isAuth) {
+          return true;
+        }
+        
+        // Redirect to login with return URL
+        return this.router.createUrlTree(['/login'], {
+          queryParams: { returnUrl: state.url }
+        });
+      })
+    );
+  }
+}
+
+// Usage
+{ 
+  path: 'dashboard', 
+  component: DashboardComponent,
+  canActivate: [AuthGuard] 
+}</pre></div>
+            
+            <p><strong>2. CanActivateChild - Protect Child Routes:</strong></p>
+            <div class="code-block"><pre>@Injectable({ providedIn: 'root' })
+export class AdminGuard implements CanActivateChild {
+  canActivateChild(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): boolean {
+    const requiredRole = route.data.role;
+    return this.authService.hasRole(requiredRole);
+  }
+}
+
+// Usage
+{
+  path: 'admin',
+  component: AdminComponent,
+  canActivateChild: [AdminGuard],
+  children: [
+    { path: 'users', component: UsersComponent, data: { role: 'ADMIN' } },
+    { path: 'settings', component: SettingsComponent, data: { role: 'SUPER_ADMIN' } }
+  ]
+}</pre></div>
+            
+            <p><strong>3. CanDeactivate - Prevent Leaving Unsaved Changes:</strong></p>
+            <div class="code-block"><pre>// Interface
+export interface CanComponentDeactivate {
+  canDeactivate: () => Observable&lt;boolean&gt; | Promise&lt;boolean&gt; | boolean;
+}
+
+// Guard
+@Injectable({ providedIn: 'root' })
+export class UnsavedChangesGuard implements CanDeactivate&lt;CanComponentDeactivate&gt; {
+  canDeactivate(
+    component: CanComponentDeactivate
+  ): Observable&lt;boolean&gt; | boolean {
+    return component.canDeactivate ? component.canDeactivate() : true;
+  }
+}
+
+// Component
+@Component({ ... })
+export class FormComponent implements CanComponentDeactivate {
+  form: FormGroup;
+  
+  canDeactivate(): boolean {
+    if (this.form.dirty) {
+      return confirm('You have unsaved changes. Do you really want to leave?');
+    }
+    return true;
+  }
+}
+
+// Route
+{ 
+  path: 'edit/:id', 
+  component: FormComponent,
+  canDeactivate: [UnsavedChangesGuard] 
+}</pre></div>
+            
+            <p><strong>4. CanLoad - Prevent Lazy Module Loading:</strong></p>
+            <div class="code-block"><pre>@Injectable({ providedIn: 'root' })
+export class AuthLoadGuard implements CanLoad {
+  constructor(private authService: AuthService) {}
+  
+  canLoad(route: Route, segments: UrlSegment[]): Observable&lt;boolean&gt; {
+    return this.authService.isAuthenticated$.pipe(
+      take(1),  // Complete after first emission
+      tap(isAuth => {
+        if (!isAuth) {
+          console.log('Module load prevented - not authenticated');
+        }
+      })
+    );
+  }
+}
+
+// Usage - prevents module from being downloaded
+{
+  path: 'admin',
+  loadChildren: () => import('./admin/admin.module'),
+  canLoad: [AuthLoadGuard]  // Module won't load if false
+}</pre></div>
+            
+            <p><strong>5. Resolve - Pre-fetch Data Before Route Activation:</strong></p>
+            <div class="code-block"><pre>@Injectable({ providedIn: 'root' })
+export class UserResolver implements Resolve&lt;User&gt; {
+  constructor(private userService: UserService) {}
+  
+  resolve(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable&lt;User&gt; {
+    const id = route.paramMap.get('id');
+    
+    return this.userService.getUser(id).pipe(
+      catchError(error => {
+        console.error('Error loading user', error);
+        return of(null);  // Or redirect
+      })
+    );
+  }
+}
+
+// Component
+export class UserDetailComponent implements OnInit {
+  user: User;
+  
+  ngOnInit() {
+    // Data already loaded
+    this.route.data.subscribe(data => {
+      this.user = data.user;
+    });
+  }
+}
+
+// Route
+{
+  path: 'user/:id',
+  component: UserDetailComponent,
+  resolve: { user: UserResolver }
+}</pre></div>
+            
+            <p><strong>6. Functional Guards (Angular 15+):</strong></p>
+            <div class="code-block"><pre>// Auth guard as function
+export const authGuard: CanActivateFn = (route, state) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+  
+  return authService.isAuthenticated$.pipe(
+    map(isAuth => isAuth || router.createUrlTree(['/login']))
+  );
+};
+
+// Usage
+{ path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] }
+
+// Multiple guards
+{ 
+  path: 'admin',
+  canActivate: [authGuard, roleGuard('ADMIN')],
+  component: AdminComponent 
+}
+
+// Parameterized guard
+export function roleGuard(role: string): CanActivateFn {
+  return (route, state) => {
+    const authService = inject(AuthService);
+    return authService.hasRole(role);
+  };
+}</pre></div>
+            
+            <p><strong>7. Guard Execution Order:</strong></p>
+            <div class="code-block"><pre>// Order of execution:
+1. canDeactivate (current route)
+2. canLoad (lazy modules)
+3. canActivateChild (parent routes)
+4. canActivate (target route)
+5. resolve (data resolvers)
+
+// All guards must return true for navigation to proceed</pre></div>
+            
+            <p><strong>Best Practices:</strong></p>
+            <ul>
+                <li>Use CanLoad for auth to prevent unauthorized module downloads</li>
+                <li>Return UrlTree instead of manual router.navigate() in guards</li>
+                <li>Use resolve() for critical data, not optional data</li>
+                <li>Keep guard logic simple - delegate to services</li>
+                <li>Consider functional guards for cleaner code (Angular 15+)</li>
+                <li>Always handle errors in resolvers</li>
+            </ul>
+        `,
+          },
+          {
+            title: "Standalone Components - In Depth",
+            difficulty: "hard",
+            description:
+              "Complete guide to standalone components, migration, and best practices.",
+            tags: ["Standalone", "Architecture", "Angular 14+"],
+            answer: `
+            <h4>Standalone Components Deep Dive:</h4>
+            
+            <p><strong>1. Basic Standalone Component:</strong></p>
+            <div class="code-block"><pre>@Component({
+  selector: 'app-user-card',
+  standalone: true,  // No NgModule needed
+  imports: [CommonModule, FormsModule, MaterialModule],
+  template: \`
+    &lt;div class="card"&gt;
+      &lt;h2&gt;{{ user.name }}&lt;/h2&gt;
+      &lt;p *ngIf="user.email"&gt;{{ user.email }}&lt;/p&gt;
+    &lt;/div&gt;
+  \`
+})
+export class UserCardComponent {
+  @Input() user: User;
+}</pre></div>
+            
+            <p><strong>2. Standalone Component with Providers:</strong></p>
+            <div class="code-block"><pre>@Component({
+  standalone: true,
+  imports: [CommonModule, HttpClientModule],
+  providers: [
+    UserService,  // Component-level service
+    { provide: API_URL, useValue: 'https://api.example.com' }
+  ],
+  template: '...'
+})
+export class UserListComponent {}</pre></div>
+            
+            <p><strong>3. Bootstrapping Standalone App:</strong></p>
+            <div class="code-block"><pre>// main.ts
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { importProvidersFrom } from '@angular/core';
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideRouter(routes),
+    provideHttpClient(),
+    provideAnimations(),
+    importProvidersFrom(BrowserAnimationsModule),
+    // App-wide services
+    { provide: ErrorHandler, useClass: GlobalErrorHandler }
+  ]
+}).catch(err => console.error(err));</pre></div>
+            
+            <p><strong>4. Routing with Standalone Components:</strong></p>
+            <div class="code-block"><pre>// routes.ts
+export const routes: Routes = [
+  {
+    path: 'home',
+    loadComponent: () => import('./home/home.component')
+      .then(m => m.HomeComponent)
+  },
+  {
+    path: 'users',
+    loadChildren: () => import('./users/users.routes')
+      .then(m => m.USER_ROUTES)
+  },
+  {
+    path: 'about',
+    component: AboutComponent  // Already imported
+  }
+];
+
+// users.routes.ts
+export const USER_ROUTES: Routes = [
+  {
+    path: '',
+    component: UserListComponent,
+    children: [
+      { path: ':id', component: UserDetailComponent }
+    ]
+  }
+];</pre></div>
+            
+            <p><strong>5. Mixing with NgModules:</strong></p>
+            <div class="code-block"><pre>// Using standalone component in NgModule
+@NgModule({
+  declarations: [OldComponent],
+  imports: [
+    CommonModule,
+    NewStandaloneComponent  // Import directly
+  ]
+})
+export class FeatureModule {}
+
+// Using NgModule in standalone component
+@Component({
+  standalone: true,
+  imports: [
+    CommonModule,
+    OldFeatureModule  // Import entire module
+  ]
+})
+export class NewComponent {}</pre></div>
+            
+            <p><strong>6. Standalone Directives and Pipes:</strong></p>
+            <div class="code-block"><pre>// Standalone Directive
+@Directive({
+  selector: '[appHighlight]',
+  standalone: true
+})
+export class HighlightDirective {
+  @Input() appHighlight: string;
+  
+  constructor(private el: ElementRef) {}
+  
+  @HostListener('mouseenter')
+  onMouseEnter() {
+    this.highlight(this.appHighlight || 'yellow');
+  }
+}
+
+// Standalone Pipe
+@Pipe({
+  name: 'truncate',
+  standalone: true
+})
+export class TruncatePipe implements PipeTransform {
+  transform(value: string, limit: number = 50): string {
+    return value.length > limit 
+      ? value.substring(0, limit) + '...' 
+      : value;
+  }
+}
+
+// Usage
+@Component({
+  standalone: true,
+  imports: [HighlightDirective, TruncatePipe],
+  template: \`
+    &lt;p [appHighlight]="'blue'"&gt;{{ text | truncate:100 }}&lt;/p&gt;
+  \`
+})
+export class MyComponent {}</pre></div>
+            
+            <p><strong>7. Environment Providers:</strong></p>
+            <div class="code-block"><pre>// app.config.ts
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideRouter(routes, 
+      withDebugTracing(),
+      withPreloading(PreloadAllModules)
+    ),
+    provideHttpClient(
+      withInterceptors([authInterceptor, errorInterceptor])
+    ),
+    provideAnimations(),
+    // Custom providers
+    { provide: LOCALE_ID, useValue: 'en-US' },
+    { provide: APP_INITIALIZER, useFactory: initApp, multi: true }
+  ]
+};
+
+// main.ts
+bootstrapApplication(AppComponent, appConfig);</pre></div>
+            
+            <p><strong>8. Feature Providers:</strong></p>
+            <div class="code-block"><pre>// users.config.ts
+export const provideUsers = () => [
+  UserService,
+  UserRepository,
+  { provide: USER_CONFIG, useValue: { pageSize: 20 } }
+];
+
+// Route with providers
+{
+  path: 'users',
+  loadComponent: () => import('./users/users.component'),
+  providers: [provideUsers()]
+}</pre></div>
+            
+            <p><strong>9. Migration from NgModule:</strong></p>
+            <div class="code-block"><pre>// Before (NgModule)
+@NgModule({
+  declarations: [MyComponent],
+  imports: [CommonModule, FormsModule],
+  providers: [MyService],
+  exports: [MyComponent]
+})
+export class MyModule {}
+
+// After (Standalone)
+@Component({
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  providers: [MyService],  // Component-level
+})
+export class MyComponent {}
+
+// CLI Migration
+ng generate @angular/core:standalone</pre></div>
+            
+            <p><strong>10. Advantages:</strong></p>
+            <ul>
+                <li><strong>Simpler:</strong> No NgModule boilerplate</li>
+                <li><strong>Better Tree-shaking:</strong> Unused code removed</li>
+                <li><strong>Lazy Loading:</strong> Component-level, not module-level</li>
+                <li><strong>Clearer Dependencies:</strong> Explicit imports</li>
+                <li><strong>Easier Testing:</strong> Less setup required</li>
+            </ul>
+            
+            <p><strong>11. When to Use:</strong></p>
+            <ul>
+                <li>New applications (recommended)</li>
+                <li>Reusable component libraries</li>
+                <li>Micro-frontends</li>
+                <li>Gradual migration of existing apps</li>
+            </ul>
+            
+            <p><strong>12. Best Practices:</strong></p>
+            <div class="code-block"><pre>// Group common imports
+export const COMMON_IMPORTS = [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule
+];
+
+@Component({
+  standalone: true,
+  imports: [...COMMON_IMPORTS, MyDirective],
+})
+
+// Use provideFn patterns
+export function provideFeature() {
+  return [
+    FeatureService,
+    { provide: FEATURE_CONFIG, useValue: config }
+  ];
+}</pre></div>
+        `,
+          },
+
+          {
+            title: "Component Communication - All Methods",
+            difficulty: "medium",
+            description:
+              "Complete guide to passing data between components in Angular.",
+            tags: ["Components", "Communication", "Data Flow"],
+            answer: `
+            <h4>Component Communication Methods:</h4>
+            
+            <p><strong>1. Parent to Child - @Input:</strong></p>
+            <div class="code-block"><pre>// Parent Component
+@Component({
+  template: \`
+    &lt;app-child 
+      [user]="currentUser"
+      [settings]="appSettings"&gt;
+    &lt;/app-child&gt;
+  \`
+})
+export class ParentComponent {
+  currentUser = { name: 'John', age: 30 };
+  appSettings = { theme: 'dark' };
+}
+
+// Child Component
+export class ChildComponent {
+  @Input() user: User;
+  @Input() settings: Settings;
+  
+  // With setter for validation/transformation
+  private _age: number;
+  @Input() 
+  set age(value: number) {
+    this._age = value < 0 ? 0 : value;
+  }
+  get age(): number {
+    return this._age;
+  }
+}</pre></div>
+            
+            <p><strong>2. Child to Parent - @Output & EventEmitter:</strong></p>
+            <div class="code-block"><pre>// Child Component
+export class ChildComponent {
+  @Output() userUpdated = new EventEmitter&lt;User&gt;();
+  @Output() notify = new EventEmitter&lt;string&gt;();
+  
+  updateUser() {
+    const updatedUser = { name: 'Jane', age: 25 };
+    this.userUpdated.emit(updatedUser);
+  }
+}
+
+// Parent Component
+@Component({
+  template: \`
+    &lt;app-child 
+      (userUpdated)="onUserUpdate($event)"
+      (notify)="handleNotification($event)"&gt;
+    &lt;/app-child&gt;
+  \`
+})
+export class ParentComponent {
+  onUserUpdate(user: User) {
+    console.log('User updated:', user);
+  }
+  
+  handleNotification(message: string) {
+    console.log('Notification:', message);
+  }
+}</pre></div>
+            
+            <p><strong>3. ViewChild & ContentChild:</strong></p>
+            <div class="code-block"><pre>// Parent accessing Child
+export class ParentComponent implements AfterViewInit {
+  @ViewChild(ChildComponent) child: ChildComponent;
+  @ViewChild('childRef') childRef: ChildComponent;
+  @ViewChildren(ChildComponent) children: QueryList&lt;ChildComponent&gt;;
+  
+  ngAfterViewInit() {
+    // Access child properties/methods
+    console.log(this.child.someProperty);
+    this.child.someMethod();
+    
+    // Multiple children
+    this.children.forEach(child => {
+      child.doSomething();
+    });
+  }
+}
+
+// Template
+&lt;app-child #childRef&gt;&lt;/app-child&gt;
+
+// ContentChild for projected content
+export class ContainerComponent implements AfterContentInit {
+  @ContentChild(CardComponent) card: CardComponent;
+  
+  ngAfterContentInit() {
+    this.card.expand();
+  }
+}</pre></div>
+            
+            <p><strong>4. Service-based Communication:</strong></p>
+            <div class="code-block"><pre>// Shared Service
+@Injectable({ providedIn: 'root' })
+export class DataService {
+  private messageSource = new BehaviorSubject&lt;string&gt;('default');
+  currentMessage$ = this.messageSource.asObservable();
+  
+  // Or use Subject for events
+  private eventSource = new Subject&lt;AppEvent&gt;();
+  events$ = this.eventSource.asObservable();
+  
+  changeMessage(message: string) {
+    this.messageSource.next(message);
+  }
+  
+  emitEvent(event: AppEvent) {
+    this.eventSource.next(event);
+  }
+}
+
+// Component A (Sender)
+export class ComponentA {
+  constructor(private dataService: DataService) {}
+  
+  sendMessage() {
+    this.dataService.changeMessage('Hello from A');
+  }
+}
+
+// Component B (Receiver)
+export class ComponentB implements OnInit {
+  message: string;
+  
+  constructor(private dataService: DataService) {}
+  
+  ngOnInit() {
+    this.dataService.currentMessage$.subscribe(
+      message => this.message = message
+    );
+  }
+}</pre></div>
+            
+            <p><strong>5. State Management (NgRx/Signals):</strong></p>
+            <div class="code-block"><pre>// NgRx Store
+export class ComponentA {
+  constructor(private store: Store) {}
+  
+  updateUser(user: User) {
+    this.store.dispatch(updateUser({ user }));
+  }
+}
+
+export class ComponentB {
+  user$ = this.store.select(selectCurrentUser);
+  
+  constructor(private store: Store) {}
+}
+
+// Signals (Angular 16+)
+// Shared signal service
+@Injectable({ providedIn: 'root' })
+export class UserStore {
+  private userSignal = signal&lt;User | null&gt;(null);
+  user = this.userSignal.asReadonly();
+  
+  updateUser(user: User) {
+    this.userSignal.set(user);
+  }
+}
+
+// Component A
+export class ComponentA {
+  constructor(private userStore: UserStore) {}
+  
+  save() {
+    this.userStore.updateUser({ name: 'John' });
+  }
+}
+
+// Component B
+export class ComponentB {
+  user = this.userStore.user();  // Auto-updates
+}</pre></div>
+            
+            <p><strong>6. Router State:</strong></p>
+            <div class="code-block"><pre>// Passing via route params
+this.router.navigate(['/user', userId]);
+
+// Receiving
+this.route.paramMap.subscribe(params => {
+  const id = params.get('id');
+});
+
+// Query params
+this.router.navigate(['/search'], { 
+  queryParams: { q: 'angular', filter: 'latest' }
+});
+
+// State object (not in URL)
+this.router.navigate(['/details'], { 
+  state: { user: this.currentUser }
+});
+
+// Receiving state
+constructor(private router: Router) {
+  const navigation = this.router.getCurrentNavigation();
+  const user = navigation?.extras?.state?.user;
+}</pre></div>
+            
+            <p><strong>7. Template Reference Variables:</strong></p>
+            <div class="code-block"><pre>// Parent template
+&lt;app-child #childComponent&gt;&lt;/app-child&gt;
+&lt;button (click)="childComponent.doSomething()"&gt;Call Child Method&lt;/button&gt;
+
+// Pass child to another component
+&lt;app-other [childRef]="childComponent"&gt;&lt;/app-other&gt;</pre></div>
+            
+            <p><strong>8. RxJS Patterns:</strong></p>
+            <div class="code-block"><pre>// Shared Observable Stream
+@Injectable({ providedIn: 'root' })
+export class StreamService {
+  private actions$ = new Subject&lt;Action&gt;();
+  
+  // Multiple subscribers get same value
+  sharedActions$ = this.actions$.pipe(
+    share()  // or shareReplay(1) for last value
+  );
+  
+  dispatch(action: Action) {
+    this.actions$.next(action);
+  }
+}
+
+// Components subscribe
+this.streamService.sharedActions$.subscribe(action => {
+  // React to actions
+});</pre></div>
+        `,
+          },
+          {
+            title: "Getting Values Without ngOnChanges",
+            difficulty: "medium",
+            description:
+              "Alternative methods to detect input changes without ngOnChanges lifecycle hook.",
+            tags: ["Inputs", "Change Detection", "Signals"],
+            answer: `
+            <h4>Alternatives to ngOnChanges:</h4>
+            
+            <p><strong>1. Input Setters (Best Alternative):</strong></p>
+            <div class="code-block"><pre>export class ChildComponent {
+  private _user: User;
+  
+  @Input()
+  set user(value: User) {
+    console.log('User changed:', value);
+    this._user = value;
+    this.onUserChange(value);
+  }
+  
+  get user(): User {
+    return this._user;
+  }
+  
+  onUserChange(user: User) {
+    // React to change
+    this.loadUserDetails(user.id);
+  }
+}</pre></div>
+            
+            <p><strong>2. Signal Inputs (Angular 17+):</strong></p>
+            <div class="code-block"><pre>export class ChildComponent {
+  // Signal input - automatically reactive
+  user = input&lt;User&gt;();
+  userId = input.required&lt;string&gt;();
+  
+  // Computed based on input
+  userName = computed(() => this.user()?.name ?? 'Guest');
+  
+  // React to changes with effect
+  constructor() {
+    effect(() => {
+      const currentUser = this.user();
+      if (currentUser) {
+        console.log('User changed:', currentUser);
+        this.loadData(currentUser.id);
+      }
+    });
+  }
+  
+  loadData(id: string) {
+    // API call or logic
+  }
+}</pre></div>
+            
+            <p><strong>3. Observable Inputs with RxJS:</strong></p>
+            <div class="code-block"><pre>export class ChildComponent implements OnInit, OnDestroy {
+  @Input() userId: string;
+  
+  private userIdSubject = new BehaviorSubject&lt;string&gt;('');
+  private destroy$ = new Subject&lt;void&gt;();
+  
+  ngOnInit() {
+    // React to userId changes
+    this.userIdSubject.pipe(
+      filter(id => !!id),
+      distinctUntilChanged(),
+      switchMap(id => this.userService.getUser(id)),
+      takeUntil(this.destroy$)
+    ).subscribe(user => {
+      console.log('User loaded:', user);
+    });
+  }
+  
+  @Input()
+  set userId(value: string) {
+    this.userIdSubject.next(value);
+  }
+  
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+}</pre></div>
+            
+            <p><strong>4. Using ngDoCheck (Use Sparingly):</strong></p>
+            <div class="code-block"><pre>export class ChildComponent implements DoCheck {
+  @Input() data: any;
+  private previousData: any;
+  
+  ngDoCheck() {
+    // Manual comparison
+    if (this.data !== this.previousData) {
+      console.log('Data changed');
+      this.previousData = this.data;
+      this.onDataChange();
+    }
+  }
+  
+  onDataChange() {
+    // React to change
+  }
+}
+
+// Warning: ngDoCheck runs on every CD cycle
+// Can cause performance issues if not careful</pre></div>
+            
+            <p><strong>5. EventEmitter Pattern:</strong></p>
+            <div class="code-block"><pre>// Parent
+@Component({
+  template: \`
+    &lt;app-child 
+      [user]="currentUser"
+      (userLoaded)="onUserLoaded($event)"&gt;
+    &lt;/app-child&gt;
+  \`
+})
+export class ParentComponent {
+  currentUser: User;
+  
+  updateUser(user: User) {
+    this.currentUser = { ...user };  // New reference
+  }
+  
+  onUserLoaded(user: User) {
+    console.log('Child loaded user:', user);
+  }
+}
+
+// Child
+export class ChildComponent {
+  @Input() set user(value: User) {
+    if (value) {
+      this.loadUserData(value);
+    }
+  }
+  
+  @Output() userLoaded = new EventEmitter&lt;User&gt;();
+  
+  loadUserData(user: User) {
+    // Process and emit back
+    this.userLoaded.emit(user);
+  }
+}</pre></div>
+            
+            <p><strong>6. Observable Stream Pattern:</strong></p>
+            <div class="code-block"><pre>export class ChildComponent implements OnInit {
+  @Input() set data(value: any) {
+    this.dataSubject.next(value);
+  }
+  
+  private dataSubject = new ReplaySubject&lt;any&gt;(1);
+  data$ = this.dataSubject.asObservable();
+  
+  ngOnInit() {
+    // React to all changes via observable
+    this.data$.pipe(
+      filter(data => !!data),
+      debounceTime(300),  // Optional: debounce
+      distinctUntilChanged(),  // Only if actually changed
+      switchMap(data => this.processData(data))
+    ).subscribe(result => {
+      console.log('Processed:', result);
+    });
+  }
+  
+  processData(data: any): Observable&lt;any&gt; {
+    return this.service.process(data);
+  }
+}</pre></div>
+            
+            <p><strong>7. Comparison Table:</strong></p>
+            <table style="width:100%; border-collapse: collapse; margin: 1rem 0;">
+                <tr style="background: var(--bg-card);">
+                    <th style="padding: 0.5rem; border: 1px solid var(--border);">Method</th>
+                    <th style="padding: 0.5rem; border: 1px solid var(--border);">Use Case</th>
+                    <th style="padding: 0.5rem; border: 1px solid var(--border);">Performance</th>
+                </tr>
+                <tr>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">Input Setter</td>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">Simple transformations</td>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">Excellent</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">Signal Inputs</td>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">Modern reactive apps</td>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">Excellent</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">Observable Pattern</td>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">Complex async logic</td>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">Good</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">ngDoCheck</td>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">Deep object comparison</td>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">Poor</td>
+                </tr>
+            </table>
+            
+            <p><strong>Best Practices:</strong></p>
+            <ul>
+                <li>Use input setters for simple cases</li>
+                <li>Use signal inputs for new Angular 17+ apps</li>
+                <li>Avoid ngDoCheck unless absolutely necessary</li>
+                <li>Use observables for complex async workflows</li>
+                <li>Always unsubscribe or use takeUntil</li>
+            </ul>
+        `,
+          },
+          {
+            title: "RxJS: MergeMap vs SwitchMap vs ConcatMap vs ExhaustMap",
+            difficulty: "hard",
+            description:
+              "Deep comparison with real-world scenarios and decision tree.",
+            tags: ["RxJS", "Operators", "Async"],
+            answer: `
+            <h4>Flattening Operators Comparison:</h4>
+            
+            <p><strong>1. SwitchMap - Cancel Previous, Switch to New:</strong></p>
+            <div class="code-block"><pre>// Use Case: Search / Autocomplete
+searchTerm$.pipe(
+  debounceTime(300),
+  distinctUntilChanged(),
+  switchMap(term => this.api.search(term))
+).subscribe(results => this.results = results);
+
+// Behavior:
+// User types: "ang"  → API call starts
+// User types: "angu" → Previous call CANCELLED, new call starts
+// User types: "angul" → Previous call CANCELLED, new call starts
+// Only last search completes
+
+// Real Example
+@Component({...})
+export class SearchComponent {
+  searchControl = new FormControl('');
+  results$: Observable&lt;Result[]&gt;;
+  
+  ngOnInit() {
+    this.results$ = this.searchControl.valueChanges.pipe(
+      debounceTime(300),
+      switchMap(query => 
+        query ? this.searchService.search(query) : of([])
+      )
+    );
+  }
+}</pre></div>
+            
+            <p><strong>2. MergeMap - Run All Concurrently:</strong></p>
+            <div class="code-block"><pre>// Use Case: Independent parallel requests
+userIds$.pipe(
+  mergeMap(id => this.api.getUser(id))
+).subscribe(user => this.users.push(user));
+
+// Behavior:
+// Request 1 starts (doesn't wait)
+// Request 2 starts (doesn't wait)
+// Request 3 starts (doesn't wait)
+// All run in parallel, complete in any order
+
+// Real Example - Load multiple users
+loadUsers(ids: string[]) {
+  from(ids).pipe(
+    mergeMap(id => this.userService.getUser(id), 3),  // Max 3 concurrent
+    toArray()
+  ).subscribe(users => {
+    this.allUsers = users;
+  });
+}
+
+// File uploads
+uploadFiles(files: File[]) {
+  from(files).pipe(
+    mergeMap(file => this.uploadService.upload(file), 2)  // 2 at a time
+  ).subscribe({
+    next: response => console.log('File uploaded:', response),
+    complete: () => console.log('All uploads complete')
+  });
+}</pre></div>
+            
+            <p><strong>3. ConcatMap - Sequential, Wait for Each:</strong></p>
+            <div class="code-block"><pre>// Use Case: Order matters, sequential operations
+actions$.pipe(
+  concatMap(action => this.api.processAction(action))
+).subscribe(result => console.log(result));
+
+// Behavior:
+// Request 1 starts → waits to complete
+// Request 2 starts → waits to complete
+// Request 3 starts → waits to complete
+// Maintains order, one at a time
+
+// Real Example - Sequential API calls
+saveChanges(changes: Change[]) {
+  from(changes).pipe(
+    concatMap(change => this.api.saveChange(change)),
+    toArray()
+  ).subscribe(results => {
+    console.log('All changes saved in order');
+  });
+}
+
+// Wizard steps
+completeWizard(steps: Step[]) {
+  from(steps).pipe(
+    concatMap((step, index) => {
+      console.log(\`Step \${index + 1} processing\`);
+      return this.processStep(step);
+    })
+  ).subscribe({
+    complete: () => this.router.navigate(['/success'])
+  });
+}</pre></div>
+            
+            <p><strong>4. ExhaustMap - Ignore New While Current Active:</strong></p>
+            <div class="code-block"><pre>// Use Case: Prevent double-clicks, spam prevention
+saveButton$.pipe(
+  exhaustMap(() => this.api.save(this.form.value))
+).subscribe(result => console.log('Saved'));
+
+// Behavior:
+// Click 1 → Request starts
+// Click 2 → IGNORED (request still running)
+// Click 3 → IGNORED (request still running)
+// Request completes
+// Click 4 → New request starts
+
+// Real Example - Login button
+@Component({...})
+export class LoginComponent {
+  loginClicks$ = new Subject&lt;void&gt;();
+  
+  ngOnInit() {
+    this.loginClicks$.pipe(
+      exhaustMap(() => {
+        this.loading = true;
+        return this.authService.login(this.credentials).pipe(
+          finalize(() => this.loading = false)
+        );
+      })
+    ).subscribe({
+      next: () => this.router.navigate(['/dashboard']),
+      error: err => this.showError(err)
+    });
+  }
+  
+  login() {
+    this.loginClicks$.next();
+  }
+}
+
+// Save button protection
+onSave() {
+  this.saveClicks$.next();
+}
+
+saveClicks$ = new Subject().pipe(
+  exhaustMap(() => this.apiService.save(this.data))
+);</pre></div>
+            
+            <p><strong>Visual Comparison:</strong></p>
+            <div class="code-block"><pre>// Input:     -1--2--3--4--5----|
+// Each takes ----| time to complete
+
+switchMap:   ----1-----3-----5----|
+             (2 & 4 cancelled)
+
+mergeMap:    ----1--2--3--4--5----|
+             (all complete, any order)
+
+concatMap:   ----1----2----3----4----5----|
+             (sequential order)
+
+exhaustMap:  ----1---------4---------| 
+             (2,3,5 ignored)</pre></div>
+            
+            <p><strong>Decision Tree:</strong></p>
+            <div class="code-block"><pre>Do you need only the LATEST result?
+  YES → switchMap
+  NO ↓
+
+Do you need ALL results?
+  YES → Can they run in PARALLEL?
+    YES → mergeMap
+    NO (order matters) → concatMap
+  NO ↓
+
+Want to IGNORE new while processing?
+  YES → exhaustMap</pre></div>
+            
+            <p><strong>Use Case Summary:</strong></p>
+            <table style="width:100%; border-collapse: collapse; margin: 1rem 0;">
+                <tr style="background: var(--bg-card);">
+                    <th style="padding: 0.5rem; border: 1px solid var(--border);">Operator</th>
+                    <th style="padding: 0.5rem; border: 1px solid var(--border);">Perfect For</th>
+                </tr>
+                <tr>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);"><strong>switchMap</strong></td>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">Search, Autocomplete, Typeahead, Real-time filtering</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);"><strong>mergeMap</strong></td>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">File uploads, Batch operations, Independent requests</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);"><strong>concatMap</strong></td>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">Wizards, Sequential saves, Order-dependent operations</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);"><strong>exhaustMap</strong></td>
+                    <td style="padding: 0.5rem; border: 1px solid var(--border);">Login, Save buttons, Form submission, Prevent spam</td>
+                </tr>
+            </table>
+            
+            <p><strong>Common Mistakes:</strong></p>
+            <ul>
+                <li>Using mergeMap for search (creates race conditions)</li>
+                <li>Using switchMap for save operations (may lose data)</li>
+                <li>Using concatMap when order doesn't matter (slow)</li>
+                <li>Not using exhaustMap for buttons (double-submit bugs)</li>
+            </ul>
+        `,
+          },
+        ],
+      };
+
+      function createProblemCard(problem) {
+        return `
+                <div class="problem-card" onclick="toggleAnswer(this)">
+                    <div class="problem-header">
+                        <div class="problem-title">
+                            <span class="expand-icon">▼</span>
+                            ${problem.title}
+                        </div>
+                        <span class="difficulty ${problem.difficulty}">${
+          problem.difficulty
+        }</span>
+                    </div>
+                    <p class="problem-description">${problem.description}</p>
+                    <div class="topics">
+                        ${problem.tags
+                          .map((tag) => `<span class="topic-tag">${tag}</span>`)
+                          .join("")}
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-content">
+                            ${problem.answer}
+                        </div>
+                    </div>
+                </div>
+            `;
+      }
+
+      function renderProblems() {
+        document.getElementById("js-problems").innerHTML =
+          questionsData.javascript.map(createProblemCard).join("");
+        document.getElementById("react-problems").innerHTML =
+          questionsData.react.map(createProblemCard).join("");
+        document.getElementById("angular-problems").innerHTML =
+          questionsData.angular.map(createProblemCard).join("");
+      }
+
+      function toggleAnswer(card) {
+        card.classList.toggle("expanded");
+      }
+
+      function switchTab(tabName) {
+        document
+          .querySelectorAll(".tab-content")
+          .forEach((tab) => tab.classList.remove("active"));
+        document
+          .querySelectorAll(".tab-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+
+        document.getElementById(tabName).classList.add("active");
+        event.target.classList.add("active");
+      }
+
+      renderProblems();
+    </script>
+  </body>
+</html>
